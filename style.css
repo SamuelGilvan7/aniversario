@@ -1,0 +1,62 @@
+html {
+scroll-behavior: smooth;
+}
+
+/* Glassmorphism expansivo */
+.glass-card {
+background: rgba(255, 255, 255, 0.88);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid rgba(224, 169, 109, 0.3);
+}
+
+/* Ambient floating hearts background canvas */
+#heart-canvas {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+pointer-events: none;
+z-index: 0;
+}
+
+/* Dynamic Footprint Trail Canvas - Fluido e 100% Expansivo */
+#footprint-canvas {
+position: absolute;
+top: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 140px;
+height: 100%;
+pointer-events: none;
+z-index: 15;
+}
+
+@media (max-width: 768px) {
+#footprint-canvas {
+left: 24px;
+transform: none;
+width: 70px;
+}
+}
+
+/* Section entrance animations */
+.reveal-item {
+opacity: 0;
+transform: translateY(40px);
+transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.revealed {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* Photo hover zoom */
+.photo-wrapper img {
+transition: transform 0.8s ease;
+}
+.photo-wrapper:hover img {
+transform: scale(1.04);
+}

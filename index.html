@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa Caminhada - 5 Anos Juntos</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wine: {
+                            50: '#fdf2f4',
+                            100: '#fce7ea',
+                            500: '#9b111e',
+                            700: '#670a14',
+                            900: '#380409',
+                        },
+                        roseGold: '#e0a96d',
+                        softGold: '#f3e5ab'
+                    },
+                    fontFamily: {
+                        script: ['Dancing Script', 'cursive'],
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS Separado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient-to-b from-slate-900 via-wine-900 to-slate-950 text-slate-100 font-sans relative overflow-x-hidden selection:bg-wine-500 selection:text-white w-full min-h-screen m-0 p-0">
+
+    <!-- Canvas de corações sutis ao fundo -->
+    <canvas id="heart-canvas"></canvas>
+
+   <!-- PLAYER DE MÚSICA FLUTUANTE EXPANSIVO (CANTO INFERIOR) -->
+    <div class="fixed bottom-3 right-3 left-3 sm:left-auto sm:bottom-6 sm:right-6 z-50 glass-card rounded-2xl p-3 sm:p-4 shadow-2xl border border-roseGold/40 flex items-center justify-between sm:justify-start gap-3 max-w-xs text-slate-800 transition-all duration-300">
+        <!-- ÁUDIO DA MÚSICA LOCAL -->
+        <audio id="bg-music" loop>
+            <source src="mp3/musica.mp3" type="audio/mpeg">
+            Seu navegador não suporta áudio HTML5.
+        </audio>
+
+        <div class="flex items-center gap-3">
+            <button onclick="toggleMusic()" id="music-btn" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-wine-500 to-wine-700 hover:from-wine-600 hover:to-wine-800 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all">
+                <i id="music-icon" class="fas fa-play text-sm sm:text-base ml-0.5"></i>
+            </button>
+
+            <div class="overflow-hidden pr-1">
+                <h4 class="text-xs font-bold text-slate-900 truncate">I Wanna Be Yours</h4>
+                <p id="music-status" class="text-[10px] sm:text-[11px] text-wine-600 font-medium truncate">Arctic Monkeys 🎵</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL 100% EXPANSIVO -->
+    <main class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+
+        <!-- CABEÇALHO / HERO SECTION -->
+        <section class="min-h-[90vh] sm:min-h-screen flex flex-col justify-center items-center text-center py-16 sm:py-20 relative w-full">
+            
+            <div class="inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-2.5 rounded-full glass-card border border-roseGold/40 text-wine-700 text-xs sm:text-sm font-semibold tracking-wider uppercase mb-6 shadow-md">
+                <i class="fas fa-heart text-wine-500"></i> 12 de Novembro 
+            </div>
+
+            <h1 class="text-3xl sm:text-6xl md:text-8xl font-serif font-bold text-slate-100 mb-6 leading-tight max-w-5xl">
+                Nossa Caminhada <br>
+                <span class="font-script text-5xl sm:text-7xl md:text-9xl text-transparent bg-clip-text bg-gradient-to-r from-roseGold via-rose-300 to-softGold">
+                    A Dois
+                </span>
+            </h1>
+
+            <p class="max-w-2xl text-slate-300 text-base sm:text-xl font-light mb-12 leading-relaxed px-4">
+                Conforme você desce a página, nossas pegadas vão se formando suavemente na estrada do tempo, relembrando cada instante da nossa linda história.
+            </p>
+
+            <div class="animate-bounce text-roseGold flex flex-col items-center gap-2 cursor-pointer" onclick="scrollToFirstSection()">
+                <span class="text-xs sm:text-sm font-semibold tracking-widest uppercase">Deslize para Caminhar</span>
+                <i class="fas fa-shoe-prints text-xl sm:text-2xl rotate-90"></i>
+            </div>
+        </section>
+
+
+        <!-- CONTAINER DA TRILHA DE CAMINHADA COM CANVAS DE PEGADAS EM SCROLL -->
+        <div id="timeline-container" class="relative py-12 sm:py-20 w-full">
+
+            <!-- LINHA DE TRILHO DAS PEGADAS (FUNDO) -->
+            <div class="absolute left-6 md:left-1/2 top-0 bottom-0 md:-translate-x-1/2 w-0.5 bg-gradient-to-b from-roseGold/20 via-roseGold/50 to-roseGold/20 z-0"></div>
+
+            <!-- CANVAS INTERATIVO DAS PEGADAS ANIMADAS -->
+            <canvas id="footprint-canvas"></canvas>
+
+            <!-- CONTAINER DOS 10 MOMENTOS -->
+            <div class="space-y-20 sm:space-y-48 pl-12 md:pl-0 w-full">
+
+                <!-- MOMENTO 1 -->
+                <div class="momento-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="1">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20220228-WA0044.jpeg" alt="Momento 1" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-calendar-alt"></i> Momento 1 • O Começo
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">O Primeiro Passo Juntos</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Lembro perfeitamente do dia em que você viajou para São Paulo. Mesmo a milhares de quilômetros, a distância não apagou o nosso sonho, e jamais abrimos mão um do outro.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 2 -->
+                <div class="momento-item relative flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="2">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20240912-WA0145.jpg" alt="Momento 2" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-heart"></i> Momento 2 • Sorrisos
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">A Leveza do Seu Sorriso</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Com você aprendi que a felicidade está nas gargalhadas bobas no meio do dia. Seu sorriso sempre foi e sempre será o meu porto seguro em qualquer tempestade.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 3 -->
+                <div class="momento-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="3">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20241213-WA0028.jpg" alt="Momento 3" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-plane"></i> Momento 3 • Aventuras
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">Desbravando o Mundo Juntos</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Cada viagem e cada passeio ao seu lado se transformaram em memórias inesquecíveis. Não importa para onde fomos, o melhor lugar do mundo é ao seu lado.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 4 -->
+                <div class="momento-item relative flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="4">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20240914-WA0079.jpg" alt="Momento 4" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-coffee"></i> Momento 4 • Rotina
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">A Beleza do Dia a Dia</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Transformamos a rotina em algo mágico. O café da manhã, as conversas sem fim antes de dormir e o carinho diário que renova todas as minhas forças.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 5 -->
+                <div class="momento-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="5">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20230525-WA0026.jpg" alt="Momento 5" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-hand-holding-heart"></i> Momento 5 • Companheirismo
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">Apoiando Um ao Outro</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Superamos desafios e comemoramos vitórias. Ter você segurando a minha mão me deu a coragem necessária para crescer e ser uma pessoa melhor a cada dia.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 6 -->
+                <div class="momento-item relative flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="6">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG-20241231-WA0101.jpg" alt="Momento 6" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-glass-cheers"></i> Momento 6 • Celebrações
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">Conquistas Compartilhadas</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Cada data comemorativa e conquista ao longo desses anos marcou um degrau a mais na nossa sólida história de amor.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 7 -->
+                <div class="momento-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="7">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/20260308_134155.jpg" alt="Momento 7" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-sun"></i> Momento 7 • Olhar
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">O Mesmo Brilho nos Olhos</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Mesmo após anos, continuo me apaixonando pela mesma pessoa todos os dias quando olho para você. Seu brilho ilumina minha vida.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 8 -->
+                <div class="momento-item relative flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="8">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/20261025_133940.jpg" alt="Momento 8" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-home"></i> Momento 8 • O Nosso Lar
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">Construindo Nossos Sonhos</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Passo a passo, desenhamos o nosso presente e futuro com amor, paz e a certeza de estarmos no lugar certo.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 9 -->
+                <div class="momento-item relative flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="9">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold/30 glass-card">
+                        <img src="img/IMG_20240318_202225_255_HDR.jpg" alt="Momento 9" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-white/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-semibold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-infinity"></i> Momento 9 • Amadurecimento
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">Crescendo Lado a Lado</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Nestes anos, errei bastante, mas aprendir. O nosso amor amadureceu e se tornou a estrutura mais forte de nossas vidas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- MOMENTO 10 -->
+                <div class="momento-item relative flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16 lg:gap-24 reveal-item text-slate-800 w-full" data-step="10">
+                    <div class="w-full md:w-1/2 photo-wrapper rounded-3xl overflow-hidden shadow-2xl border-2 sm:border-4 border-roseGold glass-card">
+                        <img src="img/IMG-20241107-WA0205.jpg" alt="Momento 10" class="w-full h-72 sm:h-[420px] object-cover">
+                    </div>
+                    <div class="w-full md:w-1/2 glass-card p-6 sm:p-10 rounded-3xl shadow-xl border border-roseGold/60">
+                        <div class="flex items-center gap-2 text-wine-600 font-bold text-xs sm:text-sm uppercase tracking-widest mb-3">
+                            <i class="fas fa-star"></i> Momento 10 • Hoje (12 de Novembro)
+                        </div>
+                        <h3 class="text-2xl sm:text-4xl font-serif font-bold text-slate-900 mb-4">5 Anos De Pura Felicidade!</h3>
+                        <p class="text-slate-600 font-light leading-relaxed text-sm sm:text-lg">
+                            Chegamos à marca de mais mês juntos! Esta caminhada foi incrível, mas tenho certeza absoluta de que ela é apenas o começo da nossa vida toda juntos. Te amo infinitamente!
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
+        <section class="py-20 sm:py-32 text-center w-full">
+            <div class="glass-card rounded-3xl p-8 sm:p-16 border border-roseGold/50 shadow-2xl max-w-4xl mx-auto text-slate-800">
+                <i class="fas fa-heart text-5xl sm:text-6xl text-wine-500 mb-6 animate-pulse"></i>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-slate-900 mb-4">Pronta Para os Próximos Passos?</h2>
+                <p class="text-slate-600 font-light text-base sm:text-xl mb-8 leading-relaxed">
+                    Obrigado por ser a melhor companheira de jornada que eu poderia ter no mundo.
+                </p>
+                <div class="inline-block px-8 py-3.5 rounded-full bg-gradient-to-r from-wine-600 via-wine-700 to-roseGold text-white font-script text-3xl sm:text-4xl shadow-xl mb-12">
+                    Feliz aniversário, Meu Amor! ❤️
+                </div>
+
+                <!-- SEÇÃO DO PEDIDO DE CASAMENTO -->
+                <div class="mt-8 pt-8 border-t border-roseGold/30 relative overflow-hidden">
+                    <h3 class="text-3xl sm:text-5xl font-serif font-bold text-wine-700 mb-3">
+                        Tenho uma pergunta importante...
+                    </h3>
+                    <p class="text-slate-700 font-script text-3xl sm:text-5xl mb-8 text-wine-600">
+                        Você quer ficar comigo para todo sempre? 💍
+                    </p>
+
+                    <!-- CONTAINER DOS BOTÕES COM SUPORTE MOBILE COMPLETO -->
+                    <div id="proposal-buttons-container" class="relative min-h-[160px] flex items-center justify-center gap-6 sm:gap-12">
+                        <!-- BOTÃO SIM -->
+                        <button onclick="acceptProposal()" class="px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold text-xl sm:text-3xl shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center gap-3">
+                            <i class="fas fa-check-circle"></i> SIM!
+                        </button>
+
+                        <!-- BOTÃO NÃO (FUJÃO) -->
+                        <button id="no-btn" onmouseenter="moveNoButton()" onpointerenter="moveNoButton()" ontouchstart="moveNoButton(event)" onclick="moveNoButton(event)" class="px-8 py-4 sm:px-10 sm:py-5 rounded-full bg-slate-300 text-slate-700 font-bold text-xl sm:text-3xl shadow-md cursor-pointer transition-all duration-200 relative select-none">
+                            Não
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL DE CELEBRAÇÃO (QUANDO CLICAR EM SIM) -->
+    <div id="celebration-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-card bg-white/95 rounded-3xl p-8 sm:p-14 max-w-xl w-full text-center shadow-2xl border-2 border-roseGold">
+            <div class="text-5xl sm:text-6xl mb-3">💍 💖 ✨</div>
+            <h2 class="text-3xl sm:text-5xl font-serif font-bold text-wine-700 mb-6">
+                ELA DISSE SIM!
+            </h2>
+            <div class="text-slate-700 text-sm sm:text-base mb-8 leading-relaxed space-y-2.5 font-light italic bg-wine-50/60 p-5 rounded-2xl border border-wine-100">
+                <p>Eu já machuquei você...</p>
+                <p>E você já me machucou...</p>
+                <p>Ainda temos muito pra aprender sobre o amor</p>
+                <p>Mas eu quero aprender sobre isso com você</p>
+                <p>Eu quero melhorar por você, por mim, por nós...</p>
+                <p>Ainda temos muitas coisas pra viver...</p>
+                <p class="font-semibold not-italic text-wine-700 pt-1 border-t border-wine-200/60">&ldquo;Mas sei que quero viver todas elas ao seu lado.&rdquo;</p>
+            </div>
+            <button onclick="closeModal()" class="px-8 py-3.5 rounded-full bg-wine-600 hover:bg-wine-700 text-white font-semibold text-base sm:text-lg shadow-lg transition-all">
+                Celebrar Nosso Amor ❤️
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- JavaScript Separado -->
+    <script src="script.js"></script>
+</body>
+</html>
