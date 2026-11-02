@@ -313,8 +313,10 @@ function animateHearts() {
     requestAnimationFrame(animateHearts);
 }
 
+
 window.addEventListener('resize', resizeHeartCanvas);
 window.addEventListener('load', () => {
     initHearts();
     animateHearts();
 });
+
